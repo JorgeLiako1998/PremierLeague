@@ -1,0 +1,98 @@
+
+# ---- drivers pipeline: what drives goals scored / conceded ----
+stats:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/stats.csv
+
+model_input:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/model_input.parquet
+
+model_scored:
+  type: pickle.PickleDataset
+  filepath: data/06_models/model_scored.pkl
+
+model_conceded:
+  type: pickle.PickleDataset
+  filepath: data/06_models/model_conceded.pkl
+
+metrics_scored:
+  type: json.JSONDataset
+  filepath: data/07_model_output/metrics_scored.json
+
+metrics_conceded:
+  type: json.JSONDataset
+  filepath: data/07_model_output/metrics_conceded.json
+
+shap_values_scored:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/shap_values_scored.parquet
+
+shap_values_conceded:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/shap_values_conceded.parquet
+
+drivers_scored:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/drivers_scored.csv
+
+drivers_conceded:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/drivers_conceded.csv
+
+shap_plots_scored:
+  type: matplotlib.MatplotlibDataset
+  filepath: data/08_reporting/shap_scored
+
+shap_plots_conceded:
+  type: matplotlib.MatplotlibDataset
+  filepath: data/08_reporting/shap_conceded
+
+model_on_target:
+  type: pickle.PickleDataset
+  filepath: data/06_models/model_on_target.pkl
+
+metrics_on_target:
+  type: json.JSONDataset
+  filepath: data/07_model_output/metrics_on_target.json
+
+shap_values_on_target:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/shap_values_on_target.parquet
+
+drivers_on_target:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/drivers_on_target.csv
+
+shap_plots_on_target:
+  type: matplotlib.MatplotlibDataset
+  filepath: data/08_reporting/shap_on_target
+
+# ---- style_clusters pipeline ----
+style_features:
+  type: pandas.ParquetDataset
+  filepath: data/04_feature/style_features.parquet
+
+team_clusters:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/team_clusters.csv
+
+cluster_info:
+  type: json.JSONDataset
+  filepath: data/07_model_output/cluster_info.json
+
+cluster_auc:
+  type: json.JSONDataset
+  filepath: data/07_model_output/cluster_auc.json
+
+cluster_top_features:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/cluster_top_features.csv
+
+cluster_summary:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/cluster_summary.csv
+
+cluster_shap_plots:
+  type: matplotlib.MatplotlibDataset
+  filepath: data/08_reporting/cluster_shap

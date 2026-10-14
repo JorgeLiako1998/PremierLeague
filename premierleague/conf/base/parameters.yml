@@ -1,0 +1,83 @@
+
+drivers:
+  targets:
+    scored: goals
+    conceded: goals_conceded
+    on_target: ontarget_scoring_att
+  normalize_by_season: true
+  cv_splits: 6  # grouped by season
+  top_n_plot: 15
+  # Outcomes / goal breakdowns that would leak the target, so SHAP shows
+  # *process* stats (what gets you there) rather than restating the score.
+  exclude_always: [wins, losses, clean_sheet, goals, goals_conceded]
+  exclude_by_target:
+    goals_conceded:
+      - pen_goals_conceded
+      - own_goals
+      # own scoring breakdowns are proxies for team strength, not defending
+      - att_ibox_goal
+      - att_obox_goal
+      - att_hd_goal
+      - att_pen_goal
+      - att_freekick_goal
+      - goal_fastbreak
+    goals:
+      - att_ibox_goal
+      - att_obox_goal
+      - att_hd_goal
+      - att_pen_goal
+      - att_freekick_goal
+      - goal_fastbreak
+    ontarget_scoring_att:
+      # shots and what happens to them are outcomes of the attempt itself
+      - total_scoring_att
+      - hit_woodwork
+      - big_chance_missed
+      - att_ibox_goal
+      - att_obox_goal
+      - att_hd_goal
+      - att_pen_goal
+      - att_freekick_goal
+      - goal_fastbreak
+      - pen_goals_conceded
+      - own_goals
+  model:
+    n_estimators: 300
+    learning_rate: 0.03
+    num_leaves: 4
+    min_child_samples: 10
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    random_state: 42
+
+style_clusters:
+  # results, not style: left out of the clustering and of the XGBoost features
+  outcome_cols:
+    - wins
+    - losses
+    - clean_sheet
+    - goals
+    - goals_conceded
+    - att_ibox_goal
+    - att_obox_goal
+    - att_hd_goal
+    - att_pen_goal
+    - att_freekick_goal
+    - goal_fastbreak
+    - pen_goals_conceded
+    - own_goals
+  max_missing: 0.2  # drop columns missing more than this from PCA
+  pca_variance: 0.9
+  k_range: [3, 8]  # python range(): tries k = 3..7, picks best silhouette
+  k: null  # set an int to force the number of clusters
+  top_n: 15
+  seed: 42
+  xgb:
+    n_estimators: 200
+    max_depth: 3
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 2
+    eval_metric: logloss
